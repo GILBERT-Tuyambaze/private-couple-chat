@@ -5,7 +5,6 @@ const http = require("http");
 const cors = require("cors");
 const helmet = require("helmet");
 const mongoose = require("mongoose");
-const path = require("path");
 const { Server } = require("socket.io");
 const rateLimit = require("./middleware/rateLimit");
 
@@ -22,7 +21,7 @@ const ALLOWED_ORIGINS = [
   "http://localhost:3000",
   "http://localhost:5173",
   "http://127.0.0.1:3000",
-  process.env.FRONTEND_URL,
+  process.env.FRONTEND_URL, // e.g., https://ournest.vercel.app
 ].filter(Boolean);
 
 app.use(cors({
@@ -35,12 +34,8 @@ app.use(helmet());
 app.use(express.json({ limit: "2mb" }));
 app.use(rateLimit);
 
-// ─── Routes ─────────────────────────────────
-
-// Serve uploaded files statically
-app.use("/uploads", express.static("uploads"));
-
-// API routes
+// ─── API Routes ───────────────────────────────
+app.use("/uploads", express.static("uploads")); // static uploads
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/users", userRoutes);
@@ -50,19 +45,6 @@ app.use("/api/connection", require("./routes/connection"));
 // Health check
 app.get("/health", (_req, res) => res.json({ ok: true }));
 
-// ─── Root route / Serve frontend SPA ──────────
-const FRONTEND_DIST = path.join(__dirname, "../frontend/dist");
-app.use(express.static(FRONTEND_DIST));
-
-app.get("/", (_req, res) => {
-  res.sendFile(path.join(FRONTEND_DIST, "index.html"));
-});
-
-// Optional: catch-all for SPA routing
-app.get("*", (_req, res) => {
-  res.sendFile(path.join(FRONTEND_DIST, "index.html"));
-});
-
 // ─── Socket.IO ───────────────────────────────
 const io = new Server(server, {
   cors: {
@@ -71,7 +53,6 @@ const io = new Server(server, {
     credentials: true,
   },
 });
-
 registerSocketHandlers(io);
 
 // ─── Database ───────────────────────────────
