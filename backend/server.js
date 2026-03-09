@@ -28,7 +28,7 @@ app.use(cors({
   origin: ALLOWED_ORIGINS,
   credentials: true
 }));
-
+console.log("Allowed origins for CORS:", ALLOWED_ORIGINS);
 app.use(helmet());
 app.use(express.json({ limit: "2mb" }));
 app.use(rateLimit);
