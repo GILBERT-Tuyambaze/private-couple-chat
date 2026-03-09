@@ -10,6 +10,8 @@
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "seed": "npm run seed --prefix backend",
     "build:frontend": "npm run build --prefix frontend",
+    "build:backend": "echo \"No build needed for backend\"",
+    "build": "npm run build:backend && npm run build:frontend",
     "electron": "npm run start --prefix desktop",
     "mobile": "npm run start --prefix mobile"
   },
