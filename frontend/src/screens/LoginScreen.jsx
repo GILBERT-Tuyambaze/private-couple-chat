@@ -112,9 +112,7 @@ export default function LoginScreen() {
           background: "#f2c7c720", border: "1px solid #e8c4c4",
           borderRadius: 12, fontSize: 12, color: "#888", textAlign: "center",
         }}>
-          <strong>✨ Love lives in little moments, like this one.</strong>
-          <strong>❤️ A little love, a little chat, a lot of magic. password123</strong>
-          <strong>💫 Hearts connect, one chat at a time.</strong>
+          <strong>💫 Hearts connect, one chat at a time.</strong><br></br>
            <strong>💖 Time is sweeter when shared with you</strong>
         </div>
       </div>
