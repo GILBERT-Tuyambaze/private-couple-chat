@@ -1,0 +1,23 @@
+{
+  "name": "private-couple-chat",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Full-stack private couple chat app – Web, Desktop, Mobile",
+  "scripts": {
+    "install:all": "npm i --prefix backend && npm i --prefix frontend && npm i --prefix desktop",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "seed": "npm run seed --prefix backend",
+    "build:frontend": "npm run build --prefix frontend",
+    "electron": "npm run start --prefix desktop",
+    "mobile": "npm run start --prefix mobile"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "express-rate-limit": "^8.3.0",
+    "socket.io": "^4.8.3"
+  }
+}

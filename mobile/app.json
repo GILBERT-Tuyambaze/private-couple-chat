@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "Us, Always",
+    "slug": "us-always-chat",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#f2c7c7"
+    },
+    "plugins": [
+      "expo-secure-store",
+      "expo-local-authentication",
+      [
+        "expo-notifications",
+        { "sounds": [] }
+      ]
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.couple.chat",
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "Used to unlock the app"
+      }
+    },
+    "android": {
+      "package": "com.couple.chat",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#f2c7c7"
+      },
+      "googleServicesFile": "./google-services.json"
+    },
+    "extra": {
+      "eas": { "projectId": "your-eas-project-id" }
+    }
+  }
+}
