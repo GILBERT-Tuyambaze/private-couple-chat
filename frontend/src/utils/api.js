@@ -1,11 +1,10 @@
-// ...existing code...
+// frontend/src/utils/api.js
 /**
- * frontend/src/utils/api.js
  * Thin wrapper around fetch for all REST calls to the backend.
  * Token is automatically attached from localStorage.
  */
 
-const BASE = import.meta.env.VITE_API_URL || "http://localhost:4000";
+const BASE = import.meta.env.VITE_API_URL?.replace(/\/$/, '') || "http://localhost:4000";
 
 function getToken() {
   return localStorage.getItem("cc_token") || "";
@@ -34,34 +33,43 @@ async function request(method, path, body) {
 }
 
 export const api = {
-      // Connection requests
-      sendConnectionRequest: (toUsername) => request('POST', '/api/connection/send', { toUsername }),
-      getConnectionRequests: () => request('GET', '/api/connection/list'),
-      acceptConnectionRequest: (requestId) => request('POST', '/api/connection/accept', { requestId }),
-      declineConnectionRequest: (requestId) => request('POST', '/api/connection/decline', { requestId }),
-      cancelConnectionRequest: (requestId) => request('POST', '/api/connection/cancel', { requestId }),
-    // Partner
-    getPartner: () => request("GET", "/api/users/me/partner"),
+  // Connection requests
+  sendConnectionRequest: (toUsername) =>
+    request('POST', '/api/connection/send', { toUsername }),
+  getConnectionRequests: () =>
+    request('GET', '/api/connection/list'),
+  acceptConnectionRequest: (requestId) =>
+    request('POST', '/api/connection/accept', { requestId }),
+  declineConnectionRequest: (requestId) =>
+    request('POST', '/api/connection/decline', { requestId }),
+  cancelConnectionRequest: (requestId) =>
+    request('POST', '/api/connection/cancel', { requestId }),
 
-    // User search
-    searchUsers: (query) => request("GET", `/api/users/search?q=${encodeURIComponent(query)}`),
+  // Partner
+  getPartner: () =>
+    request("GET", "/api/users/me/partner"),
 
-    // Disconnect partner
-    disconnectPartner: () => request("POST", "/api/users/disconnect"),
+  // User search
+  searchUsers: (query) =>
+    request("GET", `/api/users/search?q=${encodeURIComponent(query)}`),
+
+  // Disconnect partner
+  disconnectPartner: () =>
+    request("POST", "/api/users/disconnect"),
+
   // Auth
-  register: (body) => request("POST", "/api/auth/register", body),
-  login: (body) => request("POST", "/api/auth/login", body),
+  register: (body) =>
+    request("POST", "/api/auth/register", body),
+  login: (body) =>
+    request("POST", "/api/auth/login", body),
 
   // Messages
   getMessages: (partnerId) =>
     request("GET", `/api/messages?partner_id=${partnerId}`),
-
   sendMessage: (body) =>
     request("POST", "/api/messages/send", body),
-
   toggleReaction: (body) =>
     request("POST", "/api/messages/reaction", body),
-
   markRead: (body) =>
     request("POST", "/api/messages/read", body),
 
@@ -78,9 +86,10 @@ export const api = {
     if (!res.ok) throw new Error(data.error || "Upload failed");
     return data.file;
   },
+
+  // User info
   getUser: (id) =>
     request("GET", `/api/users/${id}`),
-
   getProfile: () =>
     request("GET", "/api/users/me/profile"),
 };
