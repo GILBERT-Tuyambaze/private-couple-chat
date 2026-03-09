@@ -5,6 +5,7 @@ const http = require("http");
 const cors = require("cors");
 const helmet = require("helmet");
 const mongoose = require("mongoose");
+const path = require("path");
 const { Server } = require("socket.io");
 const rateLimit = require("./middleware/rateLimit");
 
@@ -29,6 +30,7 @@ app.use(cors({
   credentials: true
 }));
 console.log("Allowed origins for CORS:", ALLOWED_ORIGINS);
+
 app.use(helmet());
 app.use(express.json({ limit: "2mb" }));
 app.use(rateLimit);
@@ -38,12 +40,28 @@ app.use(rateLimit);
 // Serve uploaded files statically
 app.use("/uploads", express.static("uploads"));
 
+// API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/files", require("./routes/files"));
 app.use("/api/connection", require("./routes/connection"));
+
+// Health check
 app.get("/health", (_req, res) => res.json({ ok: true }));
+
+// ─── Root route / Serve frontend SPA ──────────
+const FRONTEND_DIST = path.join(__dirname, "../frontend/dist");
+app.use(express.static(FRONTEND_DIST));
+
+app.get("/", (_req, res) => {
+  res.sendFile(path.join(FRONTEND_DIST, "index.html"));
+});
+
+// Optional: catch-all for SPA routing
+app.get("*", (_req, res) => {
+  res.sendFile(path.join(FRONTEND_DIST, "index.html"));
+});
 
 // ─── Socket.IO ───────────────────────────────
 const io = new Server(server, {
